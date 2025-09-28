@@ -43,10 +43,12 @@ flutter run
 ```
 lib/
 ├── main.dart                     # App entry point with Material Design 3 theme
+├── utils/
+│   └── constants.dart           # Centralized styling constants and sample data
 └── screens/
-    ├── onboarding_screen.dart    # Full-screen welcome with gradient overlay
-    ├── food_search_screen.dart   # Search interface with invisible card design
-    └── food_detail_screen.dart   # Detail view with custom star-burst badge
+    ├── onboarding_screen.dart    # Full-screen welcome with landscape support
+    ├── food_search_screen.dart   # Advanced search with visibility-based blur effects
+    └── food_detail_screen.dart   # Detail view with positioned star-burst badge
 assets/
 └── images/
     ├── pasta_bg.jpg             # Onboarding background image
@@ -114,6 +116,9 @@ assets/
 ✅ **Perfect Design Match** - 100% accurate color, typography, and layout implementation  
 ✅ **Custom Star-Burst Badge** - Mathematical precision with 30 triangular spikes  
 ✅ **Invisible Card Design** - Seamless background integration without visible edges  
+✅ **Advanced Blur Effects** - Dynamic visibility-based blur using ScrollController and RenderBox  
+✅ **Modular Architecture** - Standalone widgets following Flutter best practices  
+✅ **Landscape Support** - Full scrolling support in landscape orientation  
 ✅ **Optimized Performance** - RepaintBoundary, ListView.separated, efficient rendering  
 ✅ **Responsive Layout** - Adapts to different screen sizes and orientations  
 ✅ **Navigation System** - Smooth transitions between all three screens  
@@ -122,14 +127,90 @@ assets/
 ✅ **Touch Interactions** - Intuitive gesture handling and feedback  
 ✅ **Clean Code Architecture** - Well-organized, documented, and maintainable codebase
 
+## Advanced Technical Features
+
+### Dynamic Blur Effects (ViewBuilder Integration)
+
+The food search screen features sophisticated visibility-based blur effects:
+
+- **ScrollController Integration**: Tracks scroll position changes in real-time
+- **GlobalKey Positioning**: Each restaurant card has precise position tracking
+- **RenderBox Calculations**: Mathematical visibility percentage calculations
+- **50% Visibility Threshold**: Items blur when less than 50% visible on screen
+- **Performance Optimized**: Blur effects only apply when needed
+
+```dart
+// ViewBuilder pattern for dynamic blur effects
+Widget build(BuildContext context) {
+  return ListView.builder(
+    controller: _scrollController,
+    itemBuilder: (context, index) {
+      return RestaurantCard(
+        key: _itemKeys[index],
+        shouldBlur: _itemVisibility[index] == true,
+        // ... other properties
+      );
+    },
+  );
+}
+```
+
+### Modular Widget Architecture
+
+Following Flutter standards with standalone, reusable components:
+
+#### Core Widgets
+
+- **`FoodSearchBar`** - Reusable search input with consistent styling
+- **`CategoryChip`** - Filter chips with Material Design principles
+- **`SectionHeader`** - Typography-compliant headers
+- **`MainTitle`** - App title with gradient background effects
+
+#### Restaurant Display Components
+
+- **`OpenNowBadge`** - Status indicator with proper positioning
+- **`RestaurantImage`** - Image container with error handling
+- **`RestaurantInfo`** - Text information display with responsive layout
+- **`RestaurantCard`** - Main card component with integrated blur support
+
+#### Utility Components
+
+- **`StarBurstDiscountBadge`** - Custom painted discount indicator
+- **Constants Integration** - Centralized styling via `AppConstants`
+
+### ViewBuilder Pattern Implementation
+
+```dart
+// Visibility calculation with ViewBuilder approach
+void _updateItemVisibility() {
+  for (int i = 0; i < _itemKeys.length; i++) {
+    final RenderBox? renderBox =
+        _itemKeys[i].currentContext?.findRenderObject() as RenderBox?;
+
+    if (renderBox != null) {
+      final position = renderBox.localToGlobal(Offset.zero);
+      final size = renderBox.size;
+      final visibilityPercentage = _calculateVisibility(position, size);
+
+      _itemVisibility[i] = visibilityPercentage < 0.5;
+    }
+  }
+  setState(() {});
+}
+```
+
 ## Technical Highlights
 
-- **Custom Painting**: Advanced CustomPainter implementation for star-burst shapes
-- **Mathematical Calculations**: Trigonometry for precise spike positioning
-- **Widget Optimization**: Strategic use of RepaintBoundary for performance
-- **Responsive Design**: MediaQuery usage for screen adaptation
-- **Material Design 3**: Latest design system implementation
-- **State Management**: Efficient StatefulWidget usage where needed
+- **Advanced Scroll Effects**: Dynamic blur with ScrollController and GlobalKey positioning
+- **ViewBuilder Architecture**: Efficient widget building with state-based rendering
+- **Custom Painting**: Mathematical CustomPainter implementation for star-burst shapes
+- **Visibility Calculations**: RenderBox positioning with percentage-based blur logic
+- **Modular Components**: Standalone widgets following Flutter best practices
+- **Performance Engineering**: RepaintBoundary, conditional rendering, optimized calculations
+- **Responsive Design**: MediaQuery integration with landscape/portrait support
+- **Material Design 3**: Latest design system with proper theming
+- **State Management**: Efficient StatefulWidget with scroll-based state updates
+- **Constants Architecture**: Centralized styling through dedicated constants file
 
 ## Development Roadmap
 
@@ -140,43 +221,15 @@ assets/
 - [x] Custom star-burst discount badge
 - [x] Performance optimizations
 - [x] Responsive design implementation
+- [x] Advanced visibility-based blur effects
+- [x] Modular widget architecture
+- [x] Landscape scrolling support
+- [x] ViewBuilder pattern integration
+- [x] Constants-based styling system
 
-### Phase 2: Enhanced Features (Future)
 
-- [ ] Replace placeholder images with high-quality food photography
-- [ ] Implement real-time search functionality
-- [ ] Add food item filtering and sorting options
-- [ ] Create user authentication system
-- [ ] Build shopping cart functionality
 
-### Phase 3: Backend Integration (Future)
 
-- [ ] REST API integration for dynamic content
-- [ ] User profile management
-- [ ] Order tracking and history
-- [ ] Payment gateway integration
-- [ ] Push notifications for orders
 
-### Phase 4: Advanced Features (Future)
 
-- [ ] Offline support with local database
-- [ ] Smooth animations and micro-interactions
-- [ ] GPS-based restaurant discovery
-- [ ] Social features and reviews
-- [ ] Multi-language support
 
----
-
-**Current Status**: Phase 1 complete - Production-ready UI with perfect design implementation and optimized performance.
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

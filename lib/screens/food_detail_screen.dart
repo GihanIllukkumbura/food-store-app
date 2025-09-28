@@ -159,7 +159,7 @@ class FoodDetailScreen extends StatelessWidget {
                   ),
                   // Star-burst discount badge - bottom right corner, overlapping image boundary
                   const Positioned(
-                    bottom: -15, // Half extends below the image
+                    bottom: -25, // Moved further down below the image
                     right: 35, // Slightly inside from the right edge
                     child: StarBurstDiscountBadge(),
                   ),
@@ -212,11 +212,11 @@ class FoodDetailScreen extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // Description
-                    Text(
+                    const Text(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad',
                       style: TextStyle(
                         fontSize: 16,
-                        color: const Color(0xFF6B7280),
+                        color: Color(0xFF6B7280),
                         height: 1.6,
                       ),
                     ),
@@ -237,7 +237,8 @@ class FoodDetailScreen extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 100, 164, 236),
+                          backgroundColor:
+                              const Color.fromARGB(255, 100, 164, 236),
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
